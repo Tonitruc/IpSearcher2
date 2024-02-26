@@ -31,7 +31,26 @@ public class IpService {
     }
 
     public boolean isValidIp(String ip) {
-        String ipPattern  = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        return Pattern.compile(ipPattern).matcher(ip).matches();
+        if (ip == null || ip.isEmpty()) {
+            return false;
+        }
+
+        String[] parts = ip.split("\\.");
+        if (parts.length != 4) {
+            return false;
+        }
+
+        for (String part : parts) {
+            try {
+                int value = Integer.parseInt(part);
+                if (value < 0 || value > 255) {
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
