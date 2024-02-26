@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class IpController {
     private IpService ipService;
-    @PostMapping("/{ip}")
-    public ResponseEntity<IpResponse> getIpInfo(@PathVariable String ip) {
-        IpResponse response = ipService.getIpInfo(ip);
-        return ResponseEntity.ok(response);
-    }
 
     @PostMapping("/ip")
     public ResponseEntity<IpResponse> handleIpRequest(@RequestBody IpRequest ipRequest) {
