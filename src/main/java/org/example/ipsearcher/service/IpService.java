@@ -6,7 +6,6 @@ import org.example.ipsearcher.model.IpEntity;
 import org.example.ipsearcher.repository.IpRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.regex.Pattern;
 
@@ -20,10 +19,8 @@ public class IpService {
         if(!isValidIp(ip))
             throw new IllegalArgumentException("Invalid IP address");
 
-        String baseUrl = "http://ip-api.com/json/";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .path(ip);
-        IpResponse response = restTemplate.getForObject(builder.toUriString(), IpResponse.class);
+        String url = "http://ip-api.com/json/" + ip;
+        IpResponse response = restTemplate.getForObject(url, IpResponse.class);
 
         if (response.getCountry() != null && response.getRegionName() != null && response.getCity() != null) {
             ipRepository.save(new IpEntity(response.getQuery(), response.getCountry(),
@@ -34,26 +31,7 @@ public class IpService {
     }
 
     public boolean isValidIp(String ip) {
-        if (ip == null || ip.isEmpty()) {
-            return false;
-        }
-
-        String[] parts = ip.split("\\.");
-        if (parts.length != 4) {
-            return false;
-        }
-
-        for (String part : parts) {
-            try {
-                int value = Integer.parseInt(part);
-                if (value < 0 || value > 255) {
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-
-        return true;
+        String ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        return Pattern.compile(ipPattern).matcher(ip).matches();
     }
 }

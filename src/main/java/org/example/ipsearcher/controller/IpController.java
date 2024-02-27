@@ -13,10 +13,16 @@ import org.springframework.web.bind.annotation.*;
 public class IpController {
     private IpService ipService;
 
-    @PostMapping("/ip")
+    @PostMapping
     public ResponseEntity<IpResponse> handleIpRequest(@RequestBody IpRequest ipRequest) {
         IpResponse response = ipService.getIpInfo(ipRequest.getQuery());
         return ResponseEntity.ok(response);
     }
+
+/*    @PostMapping("/param")
+    public ResponseEntity<IpResponse> getIpInfo(@RequestParam String ip) {
+        IpResponse response = ipService.getIpInfo(ip);
+        return ResponseEntity.ok(response);
+    }*/
 }
 
