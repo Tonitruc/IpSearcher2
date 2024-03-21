@@ -5,7 +5,6 @@ import org.example.ipsearcher.dto.request.UserRequest;
 import org.example.ipsearcher.model.IpHistoryEntity;
 import org.example.ipsearcher.model.UserEntity;
 import org.example.ipsearcher.service.IpHistoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
