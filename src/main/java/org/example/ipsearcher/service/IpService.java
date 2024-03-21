@@ -60,15 +60,14 @@ public class IpService {
         }
 
         IpHistoryEntity ipHistoryEntity = new IpHistoryEntity(LocalDate.now(), ipEntity);
-        ipHistoryEntity.getUserEntities().add(userEntity); // добавляем пользователя в множество userEntities объекта IpHistoryEntity
+        ipHistoryEntity.getUserEntities().add(userEntity);
 
-        // Проверяем, существует ли уже запись с таким же значением "request_time" и "ip_entity_id"
+
         IpHistoryEntity existingIpHistoryEntity = ipHistoryRepository.findByRequestTimeAndIpEntity(ipHistoryEntity.getRequestTime(), ipHistoryEntity.getIpEntity());
         if (existingIpHistoryEntity == null) {
-            // Если записи нет, сохраняем новую
+
             ipHistoryRepository.save(ipHistoryEntity);
         } else {
-            // Если запись уже существует, добавляем пользователя в множество userEntities существующего объекта IpHistoryEntity
             existingIpHistoryEntity.getUserEntities().add(userEntity);
             ipHistoryRepository.save(existingIpHistoryEntity);
         }
